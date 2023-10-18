@@ -18,4 +18,4 @@ jobs:
         run: |
           export REPO=$(basename $GITHUB_REPOSITORY) &&
           cd $GITHUB_WORKSPACE/src &&
-          scp -r -i ${{ secrets.USER_PASS }} ./$REPO ${{ secrets.USER_NAME }}@${{ secrets.USER_HOST }}:/home/${{ secrets.USER_NAME }}/test/$REPO
+          sshpass -p ${{ secrets.USER_PASS }} scp -r ./$REPO ${{ secrets.USER_NAME }}@${{ secrets.USER_HOST }}:/home/${{ secrets.USER_NAME }}/test/$REPO
