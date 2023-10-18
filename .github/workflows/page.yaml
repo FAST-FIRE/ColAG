@@ -7,16 +7,15 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
-    - name: Deploy
-      uses: cross-the-world/scp-pipeline@master
-      env:
-        WELCOME: "ssh scp ssh pipelines"
-        LASTSSH: "Doing something after copying"
-      with:
-        host: ${{ secrets.USER_HOST }}
-        user: ${{ secrets.USER_NAME }}
-        pass: ${{ secrets.USER_PASS }}
-        connect_timeout: 10s
-        local: './*'
-        remote: /home/pages/test/$GITHUB_REPOSITORY
+      - name: Code Checkout
+        uses: actions/checkout@v4
+      - name: Create Workspace
+        run: |
+          export REPO=$(basename $GITHUB_REPOSITORY) &&
+          cd $GITHUB_WORKSPACE/.. && mkdir src/ &&
+          mv $REPO/ src/ && mkdir $REPO/ && mv src/ $REPO/ && cd $REPO/
+      - name: Deploy
+        run: |
+          export REPO=$(basename $GITHUB_REPOSITORY) &&
+          cd $GITHUB_WORKSPACE/src &&
+          scp -r -i ${{ secrets.USER_PASS }} ./$REPO ${{ secrets.USER_NAME }}@${{ secrets.USER_HOST }}:/home/${{ secrets.USER_NAME }}/test/$REPO
