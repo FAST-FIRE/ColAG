@@ -9,14 +9,12 @@ jobs:
     steps:
       - name: Code Checkout
         uses: actions/checkout@v4
-      - name: Create Workspace
-        run: |
-          export REPO=$(basename $GITHUB_REPOSITORY) &&
-          cd $GITHUB_WORKSPACE/.. && mkdir src/ &&
-          mv $REPO/ src/ && mkdir $REPO/ && mv src/ $REPO/ && cd $REPO/ &&
-          sudo apt-get install sshpass
-      - name: Deploy
-        run: |
-          export REPO=$(basename $GITHUB_REPOSITORY) &&
-          cd $GITHUB_WORKSPACE/src &&
-          sshpass -p ${{ secrets.USER_PASS }} scp -r ./$REPO ${{ secrets.USER_NAME }}@${{ secrets.USER_HOST }}:/home/${{ secrets.USER_NAME }}/test/$REPO
+      - name: Deploy to Server
+        uses: easingthemes/ssh-deploy@main
+        with:
+          SSH_PRIVATE_KEY: ${{ secrets.USER_SSH_KEY }}
+          ARGS: "-rlgoDzvc -i --delete"
+          SOURCE: "./"
+          REMOTE_HOST: ${{ secrets.USER_HOST }}
+          REMOTE_USER: ${{ secrets.USER_NAME }}
+          TARGET: "/home/pages/test/"
