@@ -13,7 +13,8 @@ jobs:
         run: |
           export REPO=$(basename $GITHUB_REPOSITORY) &&
           cd $GITHUB_WORKSPACE/.. && mkdir src/ &&
-          mv $REPO/ src/ && mkdir $REPO/ && mv src/ $REPO/ && cd $REPO/
+          mv $REPO/ src/ && mkdir $REPO/ && mv src/ $REPO/ && cd $REPO/ &&
+          sudo apt-get install sshpass
       - name: Deploy
         run: |
           export REPO=$(basename $GITHUB_REPOSITORY) &&
