@@ -118,14 +118,6 @@ source devel/setup.sh
 roslaunch ego_planner swarm_sim.launch ugv_num:=3
 ```
 
-Launch the VRPTW solver
-
-```sh
-cd Air_ws
-source devel/setup.sh
-roslaunch guide_manager guide_plan.launch
-```
-
 Then send a trigger to start blind navigation
 
 ```sh
