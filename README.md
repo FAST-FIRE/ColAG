@@ -156,6 +156,6 @@ The source code is released under the [GPLv3](https://www.gnu.org/licenses/) lic
 
 We are still working on extending the proposed system and improving code reliability.
 
-For any technical issues, please contact Zhehan Li (<zhehanli@zju.edu.cn>) or Yanjun Cao (<fgaoaa@zju.edu.cn>).
+For any technical issues, please contact Zhehan Li (<zhehanli@zju.edu.cn>) or Yanjun Cao (<yanjunhi@zju.edu.cn>).
 
-For commercial inquiries, please contact Yanjun Cao (<fgaoaa@zju.edu.cn>).
+For commercial inquiries, please contact Yanjun Cao (<yanjunhi@zju.edu.cn>).
