@@ -1,0 +1,28 @@
+<launch>
+  <node pkg="fake_crepes" name="fake_crepes" type="fake_crepes" output="screen">
+
+    <param name="uav_num" value="1"/>
+    <param name="ugv_num" value="1"/>
+    <param name="have_noise" value="false"/>
+    <!-- <param name="self_id" value="$(arg self_id)"/> -->
+
+    <!-- <param name="odom_topic" value="$(arg odom_topic)" type="string"/> -->
+    <param name="master_odom_topic" value="lidar_slam/odom" type="string"/>  
+    
+    <remap from="~odom" to="/drone_2_visual_slam/odom"/>
+    <remap from= "/drone_0_lidar_slam/odom" to="/drone_99_visual_slam/odom"/>
+  </node>
+  <node pkg="fake_crepes" name="fake_crepes1" type="fake_crepes" output="screen">
+
+    <param name="uav_num" value="1"/>
+    <param name="ugv_num" value="1"/>
+    <param name="have_noise" value="false"/>
+    <!-- <param name="self_id" value="$(arg self_id)"/> -->
+
+    <!-- <param name="odom_topic" value="$(arg odom_topic)" type="string"/> -->
+    <param name="master_odom_topic" value="lidar_slam/odom" type="string"/>  
+    
+    <remap from="~odom" to="/drone_3_visual_slam/odom"/>
+    <remap from= "/drone_0_lidar_slam/odom" to="/drone_99_visual_slam/odom"/>
+  </node>
+</launch>

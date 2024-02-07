@@ -1,0 +1,44 @@
+mpc:
+  # du_threshold: 0.1
+  du_threshold: 0.002
+  #dt: 0.01
+  dt: 0.02
+  # max_iter: 3
+  max_iter: 150
+  predict_steps: 100
+  # predict_steps: 50
+  delay_num: 0
+  max_omega: 3.14
+  max_domega: 2.0
+  max_speed: 0.5
+  min_speed: -0.5
+  max_accel: 1.0
+  in_test: false
+  control_a: false
+  matrix_q: [12.0, 12.0, 2.0, 0.8]
+  matrix_r: [0.1, 0.1]
+  matrix_rd: [0.01, 0.01]
+
+# mpc:
+#   # du_threshold: 0.1
+#   du_threshold: 0.002
+#   dt: 0.02
+#   #dt: 0.02
+#   # max_iter: 3
+#   max_iter: 150
+#   # predict_steps: 100
+#   predict_steps: 50
+#   delay_num: 0
+#   max_omega: 3.14
+#   max_domega: 1.0
+#   max_speed: 0.5
+#   min_speed: -0.5
+#   max_accel: 1.0
+#   in_test: false
+#   control_a: false
+#   matrix_q: [10.0, 10.0, 2.5, 0.5]
+#   matrix_r: [0.2, 0.2]
+#   matrix_rd: [0.1, 0.1]
+#   # matrix_rd: [0.50, 0.30]
+#   test_traj: "/home/xulong/bk/Minco2"
+    

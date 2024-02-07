@@ -1,0 +1,32 @@
+<launch>
+
+  <arg name="car_id" default="0"/>
+  <arg name="init_x" default="-2"/>
+  <arg name="init_y" default="0"/>
+  <!-- <node pkg="teleop_twist_keyboard" name="teleop_twist_keyboard$(arg car_id)" type="teleop_twist_keyboard.py" output="screen">
+    <remap from="cmd_vel" to="/car$(arg car_id)_cmd_vel"/>
+  </node> -->
+  <node pkg="fake_car" name="fake_car$(arg car_id)" type="fake_car" output="screen">
+    <!-- <param name="car_id" value="24"/> -->
+    <param name="init_x" value="$(arg init_x)"/>
+    <param name="init_y" value="$(arg init_y)"/>
+    <param name="desired_clearance1" value="0.5"/>
+    <remap from="~cmd_vel" to="/cmd_vel"/>
+  </node>
+
+  <node pkg="odom_visualization" name="car$(arg car_id)_odom_visualization" type="odom_visualization" output="screen">
+    <remap from="~odom" to="/fake_car$(arg car_id)/odom_car"/>
+    <param name="mesh_resource" value="file://$(find odom_visualization)/meshes/car.dae"/>
+    <param name="color/a" value="1.0"/>
+    <param name="color/r" value="0.0"/>
+    <param name="color/g" value="1.0"/>
+    <param name="color/b" value="1.0"/>
+    <param name="covariance_scale" value="100.0"/>
+    <param name="robot_scale" value="0.2"/>
+    <param name="rotate_yaw_deg" value="90.0"/>
+    <param name="cross_config" value="talse"/>
+    <param name="tf45" value="false"/>
+    <param name="drone_id" value="20"/>
+  </node>
+
+</launch>

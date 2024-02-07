@@ -1,0 +1,18 @@
+  
+<launch>
+    <group ns="ugv_0">
+        <arg name="cmd_topic" value="cmd_vel"/>
+        <arg name="bspline_topic" value="bspline"/>
+        <arg name="fused_odom_topic" value="odom/origin"/>
+        <!-- ***********************************************控制***************************************************** -->
+        <node pkg="mpc" name="mpc_controller_node" type="mpc_controller_node" output="screen" respawn="true">
+
+            <rosparam command="load" file="$(find mpc)/config/param.yaml" />
+
+            <remap from="~cmd" to="$(arg cmd_topic)"/>
+            <remap from="~planning/bspline" to="$(arg bspline_topic)"/>
+            <remap from="~odom" to="$(arg fused_odom_topic)"/>
+
+        </node>
+    </group>
+</launch>

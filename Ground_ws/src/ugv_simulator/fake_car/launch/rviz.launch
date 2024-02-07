@@ -1,0 +1,3 @@
+<launch>
+  <node name="rviz" pkg="rviz" type="rviz" args="-d $(find fake_car)/launch/include/default.rviz" required="true" />
+</launch>

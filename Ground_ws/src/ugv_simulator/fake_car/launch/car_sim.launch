@@ -1,0 +1,16 @@
+<launch>
+
+    <include file="$(find fake_car)/launch/fake_car.launch">
+        <arg name="car_id" value="0"/>
+        <arg name="init_x" value="-16"/>
+        <arg name="init_y" value="-2"/>
+    </include>
+
+    <!-- <include file="$(find fake_car)/launch/fake_car.launch">
+        <arg name="car_id" value="1"/>
+        <arg name="init_x" value="-16"/>
+        <arg name="init_y" value="2"/>
+    </include> -->
+    <node pkg="teleop_twist_keyboard" name="teleop_twist_keyboard" type="teleop_twist_keyboard.py" output="screen">
+    </node>
+</launch>

@@ -1,0 +1,28 @@
+<launch>
+
+  <arg name="odom_topic" value="visual_slam/odom" />
+  <arg name="traj_topic" value="planner/trajectory" />
+  <arg name="cmd_topic" value="car/ackermann_cmd" />
+  <arg name="drone_id" value="0" />
+
+  <rosparam command="load" file="$(find mpc)/config/param.yaml" />
+
+  <node pkg="mpc" name="mpc$(arg drone_id)_controller_node" type="mpc_controller_node" output="screen">
+    <remap from="cmd" to="drone_$(arg drone_id)_planning/pos_cmd"/>
+    <remap from="planning/bspline" to="drone_$(arg drone_id)_planning/bspline"/>
+    <remap from="odom" to="drone_$(arg drone_id)_$(arg odom_topic)"/>
+  
+  </node>
+   
+  <!-- <node pkg="kimatic_simulator" type="kimatic_simulator_node" name="kimatic_simulator_node" output="screen" required="true">
+    <remap from ="~command" to="$(arg cmd_topic)"/>
+    <param name="simulator/max_omega" value="2.4"  type="double"/>
+    <param name="simulator/max_speed" value="1.5"  type="double"/>
+    <param name="simulator/time_delay" value="0.2"  type="double"/>
+    <remap from="~odometry" to="$(arg odom_topic)"/>
+  </node> -->
+
+    <!-- rviz -->
+  <!-- <node name="rviz" pkg="rviz" type="rviz" args="-d $(find mpc)/rviz/default.rviz" required="true" /> -->
+
+</launch>

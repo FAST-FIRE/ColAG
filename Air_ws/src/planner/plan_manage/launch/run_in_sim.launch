@@ -1,0 +1,166 @@
+<launch>
+  <!-- size of map, change the size inflate x, y, z according to your application -->
+  <arg name="map_size_x" value="40.0"/>
+  <arg name="map_size_y" value="40.0"/>
+  <arg name="map_size_z" value="3.0"/>
+
+  <arg name="self_id"/>
+  <arg name="uav_num"/>
+  <arg name="ugv_num"/>
+
+  <!-- number of moving objects -->
+  <arg name="obj_num" value="4" />
+
+  <arg name="odom_topic"/>
+  <arg name="cmd_topic"/>
+
+  <arg name="camera_pose_topic"/>
+  <arg name="depth_topic"/>
+  <arg name="cloud_topic"/>
+
+  <arg name="bspline_topic" value="planning/bspline"/>
+  <arg name="waypoint_topic" value="guide_waypoint"/>
+
+  <arg name="uav_map_topic" value="broadcast/grid_map"/>
+  <arg name="ugv_odom_topic" value="broadcast/ugv_odom"/>
+  <arg name="ugv_blind_topic" value="broadcast/blind_info"/>
+
+
+  <!-- communication node between uav and ugv , read map and odom from uav and receive blind info and odom from ugvs-->
+  <node pkg="swarm_bridge" name="bridge_node" type="bridge_tcp_node" output="screen">
+
+    <remap from="~map_info" to="$(arg uav_map_topic)"/>
+    <!-- <remap from="~map_info2" to="$(arg uav_map_topic)"/> -->
+    <!-- <remap from="~blind_info" to="$(arg ugv_blind_topic)"/> -->
+    <remap from="~blind_info2" to="$(arg ugv_blind_topic)"/>
+    <remap from="~odom" to="$(arg odom_topic)"/>
+    <remap from="~odom2" to="$(arg ugv_odom_topic)"/>
+
+    <param name="self_id" value="$(arg self_id)"/>
+    <param name="is_uav" value="true"/>
+    <param name="map_freq" value="5"/>
+    <param name="blind_freq" value="10"/>
+    <param name="odom_freq" value="10"/>
+
+    <param name="ugv_num" value="$(arg ugv_num)"/>
+    <param name="ugv_ip_0" value="127.0.0.1" type="string"/>
+    <param name="ugv_ip_1" value="127.0.0.1" type="string"/>
+    <param name="ugv_ip_2" value="127.0.0.1" type="string"/>
+    <param name="ugv_ip_3" value="127.0.0.1" type="string"/>
+    <param name="ugv_ip_4" value="127.0.0.1" type="string"/>
+    <param name="ugv_ip_5" value="127.0.0.1" type="string"/>
+    <param name="ugv_ip_6" value="127.0.0.1" type="string"/>
+    <param name="ugv_ip_7" value="127.0.0.1" type="string"/>
+    <param name="ugv_ip_8" value="127.0.0.1" type="string"/>
+    <param name="ugv_ip_9" value="127.0.0.1" type="string"/>
+
+    <param name="uav_num" value="$(arg uav_num)"/>
+    <param name="uav_ip_0" value="127.0.0.1" type="string"/>
+    <param name="uav_ip_1" value="127.0.0.1" type="string"/>
+    <param name="uav_ip_2" value="127.0.0.1" type="string"/>
+    <param name="uav_ip_3" value="127.0.0.1" type="string"/>
+    <param name="uav_ip_4" value="127.0.0.1" type="string"/>
+    <param name="uav_ip_5" value="127.0.0.1" type="string"/>
+    <param name="uav_ip_6" value="127.0.0.1" type="string"/>
+    <param name="uav_ip_7" value="127.0.0.1" type="string"/>
+    <param name="uav_ip_8" value="127.0.0.1" type="string"/>
+    <param name="uav_ip_9" value="127.0.0.1" type="string"/>
+
+  </node>
+
+  <!-- main node of ego planner, planning trajectory -->
+  <include file="$(find ego_planner)/launch/advanced_param.xml">
+
+    <arg name="self_id" value="$(arg self_id)"/>
+
+    <arg name="map_size_x_" value="$(arg map_size_x)"/>
+    <arg name="map_size_y_" value="$(arg map_size_y)"/>
+    <arg name="map_size_z_" value="$(arg map_size_z)"/>
+
+    <arg name="odom_topic" value="$(arg odom_topic)"/>
+    <arg name="bspline_topic" value="$(arg bspline_topic)"/>
+    <arg name="waypoint_topic" value="$(arg waypoint_topic)"/>
+    <arg name="uav_map_send_topic" value="$(arg uav_map_topic)"/>
+    <arg name="ugv_odom_receive_topic" value="$(arg ugv_odom_topic)"/>
+
+    <arg name="obj_num_set" value="$(arg obj_num)" />
+
+    <!-- camera pose: transform of camera frame in the world frame -->
+    <!-- depth topic: depth image, 640x480 by default -->
+    <!-- don't set cloud_topic if you already set these ones! -->
+    <arg name="camera_pose_topic" value="$(arg camera_pose_topic)"/>
+    <arg name="depth_topic" value="$(arg depth_topic)"/>
+
+    <!-- topic of point cloud measurement, such as from LIDAR  -->
+    <!-- don't set camera pose and depth, if you already set this one! -->
+    <arg name="cloud_topic" value="$(arg cloud_topic)"/>
+
+    <!-- intrinsic params of the depth camera -->
+    <arg name="cx" value="321.04638671875"/>
+    <arg name="cy" value="243.44969177246094"/>
+    <arg name="fx" value="387.229248046875"/>
+    <arg name="fy" value="387.229248046875"/>
+
+    <!-- maximum velocity and acceleration the drone will reach -->
+    <arg name="max_vel" value="3.0" />
+    <arg name="max_acc" value="1.0" />
+
+    <!--always set to 1.5 times grater than sensing horizen-->
+    <arg name="planning_horizon" value="7.5" />
+
+    <arg name="use_distinctive_trajs" value="true" />
+
+    <!-- 1: use 2D Nav Goal to select goal  -->
+    <!-- 2: use global waypoints below  -->
+    <arg name="flight_type" value="3" />
+
+    <!-- global waypoints -->
+    <!-- It generates a piecewise min-snap traj passing all waypoints -->
+    <arg name="point_num" value="1" />
+
+    <arg name="point0_x" value="0.0" />
+    <arg name="point0_y" value="15.0" />
+    <arg name="point0_z" value="1.0" />
+    <arg name="point1_x" value="0.0" />
+    <arg name="point1_y" value="15.0" />
+    <arg name="point1_z" value="1.0" />
+    <arg name="point2_x" value="15.0" />
+    <arg name="point2_y" value="0.0" />
+    <arg name="point2_z" value="1.0" />
+    <arg name="point3_x" value="0.0" />
+    <arg name="point3_y" value="-15.0" />
+    <arg name="point3_z" value="1.0" />
+    <arg name="point4_x" value="-15.0" />
+    <arg name="point4_y" value="0.0" />
+    <arg name="point4_z" value="1.0" />
+
+  </include>
+
+  <!-- trajectory server, input bspline and output control cmd -->
+  <node pkg="ego_planner" name="traj_server" type="traj_server" output="screen">
+
+    <remap from="~position_cmd" to="$(arg cmd_topic)"/>
+    <remap from="~planning/bspline" to="$(arg bspline_topic)"/>
+
+    <param name="traj_server/time_forward" value="1.0" type="double"/>
+
+  </node>
+
+  <!-- support ugv, caculate vrptw and give waypoints in order -->
+  <node pkg="guide_manager" name="guide_manager" type="guide_plan.py" output="screen">
+
+    <remap from="self_odom" to="$(arg odom_topic)"/>
+    <remap from="guide_waypoint" to="$(arg waypoint_topic)"/>
+    <remap from="blind_info" to="$(arg ugv_blind_topic)"/>
+
+    <param name="drone_id" value="$(arg self_id)" />
+    <param name="ugv_num" value="$(arg ugv_num)" />
+    <param name="uav_num" value="$(arg uav_num)" />
+    <param name="replan_period" value="10.0" />
+    <param name="v_max" value="3.0" />
+    <param name="a_max" value="1.0" />
+    <param name="time_reslolution" value="100.0" />
+
+  </node>
+
+</launch>

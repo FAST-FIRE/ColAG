@@ -1,0 +1,34 @@
+<launch>
+
+  <arg name="device_id" default="2"/>
+  <arg name="master_id" default="3"/>
+  <arg name="car_num" default="4"/>
+  <arg name="drone_num" default="0"/>
+  <arg name="frame" default="world"/>
+  <arg name="fusionrate" default="50"/>
+  <arg name="param_q" default="0.1"/>
+  <arg name="param_r" default="10"/>
+    
+  <arg name="drone_id" default="2"/>
+  <arg name="odometry_topic" default="visual_slam/odom"/>
+
+  <node pkg="swarm_posefusion" name="poseadd_node" type="poseadd_node" output="screen" required="true">
+  
+    <param name="fusion/self_id" value="$(arg device_id)"/>
+     <param name="fusion/master_id" value="$(arg master_id)"/>
+    <param name="fusion/car_num" value="$(arg car_num)"/>
+    <param name="fusion/drone_num" value="$(arg drone_num)"/>
+    <param name="fusion/frame" value="$(arg frame)"/>
+    <param name="fusion/rate" value="$(arg fusionrate)"/>
+    <param name="fusion/doit" value="true"/>
+    <param name="fusion/q" value="$(arg param_q)"/>
+    <param name="fusion/r" value="$(arg param_r)"/>
+
+    <remap from="/fused_odom" to="/drone_$(arg drone_id)_$(arg odometry_topic)"/>
+
+    <!-- <remap from="/result/robot$(arg master_id)_pose" to="/eskf/relative_pose"/> -->
+    <!-- <remap from="/result/robot3_pose" to="/relative_pose2dev3_topic"/> -->
+  </node>
+
+  <!-- <node pkg="rviz" type="rviz" name="rviz" args="-d $(find swarm_posefusion)/config/rviz.rviz" required="true"/> -->
+</launch>

@@ -1,0 +1,12 @@
+<launch>
+  <node pkg="swarm_posefusion" type="relative_sim_node" name="relative_sim_node" output="screen">
+    <rosparam command="load" file="$(find swarm_posefusion)/config/init_param.yaml" />
+    <!-- <remap from="/pose0_ground_truth_topic" to="/drone_2_visual_slam/odom"/>
+    <remap from="/pose1_ground_truth_topic" to="/drone_99_visual_slam/odom"/> -->
+    <param name="my_name_" value="drone_2"/>
+    <param name="other_name_" value="drone_2"/>
+    <param name="gazeboll_sim_" value="false"/>
+    <remap from="/true/robot0_pose" to="/result/robot2_pose"/>
+    <!-- <remap from="/true/odom" to="/drone_2_visual_slam/odom"/>  -->
+  </node>
+</launch>

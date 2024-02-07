@@ -1,0 +1,47 @@
+<launch>
+
+  <arg name="self_id" default="0"/>
+  <arg name="is_uav" default="false"/>
+  <arg name="uav_num" default="1"/>
+  <arg name="ugv_num" default="2"/>
+
+  <node pkg="swarm_bridge" name="bridge_node" type="bridge_tcp_node" output="screen">
+
+    <remap from="~map_info" to="broadcast/grid_map" />
+    <remap from="~map_info2" to="broadcast/grid_map" />
+    <remap from="~blind_info" to="broadcast/blind_info" />
+    <remap from="~blind_info2" to="broadcast/blind_info" />
+    <remap from="~odom" to="broadcast/odom_send" />
+    <remap from="~odom2" to="broadcast/odom_receive" />
+
+    <param name="self_id" value="$(arg self_id)"/>
+    <param name="is_uav" value="$(arg is_uav)"/>
+    <param name="max_freq" value="100"/>
+
+    <param name="ugv_num" value="$(arg ugv_num)"/>
+    <param name="ugv_ip_0" value="127.0.0.1" type="string"/>
+    <param name="ugv_ip_1" value="127.0.0.1" type="string"/>
+    <param name="ugv_ip_2" value="127.0.0.1" type="string"/>
+    <param name="ugv_ip_3" value="127.0.0.1" type="string"/>
+    <param name="ugv_ip_4" value="127.0.0.1" type="string"/>
+    <param name="ugv_ip_5" value="127.0.0.1" type="string"/>
+    <param name="ugv_ip_6" value="127.0.0.1" type="string"/>
+    <param name="ugv_ip_7" value="127.0.0.1" type="string"/>
+    <param name="ugv_ip_8" value="127.0.0.1" type="string"/>
+    <param name="ugv_ip_9" value="127.0.0.1" type="string"/>
+
+    <param name="uav_num" value="$(arg uav_num)"/>
+    <param name="uav_ip_0" value="127.0.0.1" type="string"/>
+    <param name="uav_ip_1" value="127.0.0.1" type="string"/>
+    <param name="uav_ip_2" value="127.0.0.1" type="string"/>
+    <param name="uav_ip_3" value="127.0.0.1" type="string"/>
+    <param name="uav_ip_4" value="127.0.0.1" type="string"/>
+    <param name="uav_ip_5" value="127.0.0.1" type="string"/>
+    <param name="uav_ip_6" value="127.0.0.1" type="string"/>
+    <param name="uav_ip_7" value="127.0.0.1" type="string"/>
+    <param name="uav_ip_8" value="127.0.0.1" type="string"/>
+    <param name="uav_ip_9" value="127.0.0.1" type="string"/>
+
+  </node>
+
+</launch>

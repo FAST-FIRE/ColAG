@@ -1,0 +1,236 @@
+<launch>
+  <!-- size of map, change the size inflate x, y, z according to your application -->
+  <arg name="map_size_x" value="40.0"/>
+  <arg name="map_size_y" value="40.0"/>
+  <arg name="map_size_z" value="3.0"/>
+
+  <arg name="init_x"/>
+  <arg name="init_y"/>
+  <arg name="init_z"/>
+
+  <arg name="target_x"/>
+  <arg name="target_y"/>
+  <arg name="target_z"/>
+
+  <arg name="self_id"/>
+  <arg name="uav_num"/>
+  <arg name="ugv_num"/>
+
+  <arg name="localsim"/>
+
+  <!-- number of moving objects -->
+  <arg name="obj_num" value="0" />
+
+  <arg name="fused_odom_topic" value="odom/fused"/>
+  <arg name="origin_odom_topic" value="odom/origin"/>
+
+  <arg name="bspline_topic" value="bspline"/>
+  <arg name="cmd_topic" value="cmd_vel"/>
+  <arg name="map_topic" value="map"/>
+
+  <arg name="uav_map_topic" value="broadcast/grid_map"/>
+  <arg name="uav_odom_topic" value="broadcast/uav_odom"/>
+  <arg name="ugv_blind_topic" value="broadcast/blind_info"/>
+
+  <arg name="ugv_odom_send_topic" value="$(arg fused_odom_topic)"/>
+  <arg name="ugv_odom_receive_topic" value="broadcast/ugv_odom"/>
+
+  <arg name="ugv_bspline_send_topic" value="bspline_send"/>
+  <arg name="ugv_bspline_receive_topic" value="broadcast/ugv_bspline"/>
+
+
+
+  <arg name="broadcast_ip" default = "127.0.0.255"/>
+
+  <!-- communication node between ugv, broadcast bspline to avoid collision between ugvs -->
+  <node pkg="swarm_bridge" name="bridge_udp_node" type="bridge_udp_node" output="screen">
+
+    <remap from="~broadcast_odom" to="$(arg ugv_odom_send_topic)"/>
+    <remap from="~broadcast_odom2" to="$(arg ugv_odom_receive_topic)"/>
+
+    <remap from="~broadcast_bspline" to="$(arg ugv_bspline_send_topic)"/>
+    <remap from="~broadcast_bspline2" to="$(arg ugv_bspline_receive_topic)"/>
+
+    <param name="self_id" value="$(arg self_id)"/>
+    <param name="broadcast_ip" value="$(arg broadcast_ip)" type="string"/>
+    <param name="odom_max_freq" value="10"/>
+
+  </node>
+
+  <!-- ekf node to fuse uav_odom, ugv_odom and relative pose estimation -->
+  <node pkg="swarm_posefusion" name="posefusion_node" type="swarm_posefusion_node" output="screen">
+
+    <param name="fusion/self_init" value="false"/>
+
+    <param name="fusion/self_id" value="$(arg self_id)"/>
+    <param name="fusion/uav_num" value="$(arg uav_num)"/>
+    <param name="fusion/ugv_num" value="0"/>
+    <param name="fusion/q" value="0.3"/>
+    <param name="fusion/r" value="0.2"/>
+
+    <remap from="~wheel_odom" to="$(arg origin_odom_topic)"/>
+    <remap from="~fused_odom" to="$(arg fused_odom_topic)"/>
+
+    <remap from="~uav_odom" to="$(arg uav_odom_topic)"/>
+    <remap from="~ugv_odom" to="$(arg ugv_odom_receive_topic)"/>
+
+    <remap from="~crepes/ugv_0_odom" to="fake_crepes/ugv_0_odom"/>
+    <remap from="~crepes/ugv_1_odom" to="fake_crepes/ugv_1_odom"/>
+    <remap from="~crepes/uav_0_odom" to="fake_crepes/uav_0_odom"/>
+  </node>
+
+  <!-- mpc node for diff ugv control, input bspline -->
+  <node pkg="mpc" name="mpc_controller_node" type="mpc_controller_node" output="screen" respawn="true">
+
+    <rosparam command="load" file="$(find mpc)/config/param.yaml" />
+
+    <remap from="~cmd" to="$(arg cmd_topic)"/>
+    <remap from="~planning/bspline" to="$(arg bspline_topic)"/>
+    <remap from="~odom" to="$(arg fused_odom_topic)"/>
+
+  </node>
+
+  <!-- communication node between uav and ugv , receive map and odom from uav and read blind info and odom from ugv-->
+  <node pkg="swarm_bridge" name="bridge_node" type="bridge_tcp_node" output="screen">
+
+    <!-- <remap from="~map_info" to="$(arg uav_map_topic)" /> -->
+    <remap from="~map_info2" to="$(arg uav_map_topic)" />
+    <remap from="~blind_info" to="$(arg ugv_blind_topic)" />
+    <!-- <remap from="~blind_info2" to="$(arg ugv_blind_topic)" /> -->
+    <remap from="~odom" to="$(arg fused_odom_topic)" />
+    <remap from="~odom2" to="$(arg uav_odom_topic)" />
+
+    <param name="self_id" value="$(arg self_id)"/>
+    <param name="is_uav" value="false"/>
+
+    <param name="map_freq" value="2"/>
+    <param name="blind_freq" value="10"/>
+    <param name="odom_freq" value="10"/>
+
+    <param name="ugv_num" value="$(arg ugv_num)"/>
+    <param name="ugv_ip_0" value="127.0.0.1" type="string"/>
+    <param name="ugv_ip_1" value="127.0.0.1" type="string"/>
+    <param name="ugv_ip_2" value="127.0.0.1" type="string"/>
+    <param name="ugv_ip_3" value="127.0.0.1" type="string"/>
+    <param name="ugv_ip_4" value="127.0.0.1" type="string"/>
+    <param name="ugv_ip_5" value="127.0.0.1" type="string"/>
+    <param name="ugv_ip_6" value="127.0.0.1" type="string"/>
+    <param name="ugv_ip_7" value="127.0.0.1" type="string"/>
+    <param name="ugv_ip_8" value="127.0.0.1" type="string"/>
+    <param name="ugv_ip_9" value="127.0.0.1" type="string"/>
+
+    <param name="uav_num" value="$(arg uav_num)"/>
+    <param name="uav_ip_0" value="127.0.0.1" type="string"/>
+    <param name="uav_ip_1" value="127.0.0.1" type="string"/>
+    <param name="uav_ip_2" value="127.0.0.1" type="string"/>
+    <param name="uav_ip_3" value="127.0.0.1" type="string"/>
+    <param name="uav_ip_4" value="127.0.0.1" type="string"/>
+    <param name="uav_ip_5" value="127.0.0.1" type="string"/>
+    <param name="uav_ip_6" value="127.0.0.1" type="string"/>
+    <param name="uav_ip_7" value="127.0.0.1" type="string"/>
+    <param name="uav_ip_8" value="127.0.0.1" type="string"/>
+    <param name="uav_ip_9" value="127.0.0.1" type="string"/>
+
+  </node>
+
+  <!-- main node of ego planner, planning trajectory -->
+  <include file="$(find ego_planner)/launch/advanced_param.xml">
+
+    <arg name="self_id" value="$(arg self_id)"/>
+
+    <arg name="map_size_x_" value="$(arg map_size_x)"/>
+    <arg name="map_size_y_" value="$(arg map_size_y)"/>
+    <arg name="map_size_z_" value="$(arg map_size_z)"/>
+
+    <arg name="odom_topic" value="$(arg fused_odom_topic)"/>
+    <arg name="bspline_topic" value="$(arg bspline_topic)"/>
+    <arg name="map_topic" value="$(arg map_topic)"/>
+    <arg name="uav_map_topic" value="$(arg uav_map_topic)"/>
+    <arg name="uav_odom_receive_topic" value="$(arg uav_odom_topic)"/>
+    <arg name="ugv_odom_receive_topic" value="$(arg ugv_odom_receive_topic)"/>
+    <arg name="ugv_bspline_send_topic" value="$(arg ugv_bspline_send_topic)"/>
+    <arg name="ugv_bspline_receive_topic" value="$(arg ugv_bspline_receive_topic)"/>
+    <arg name="blind_topic" value="$(arg ugv_blind_topic)"/>
+
+    <arg name="obj_num_set" value="$(arg obj_num)" />
+
+    <!-- camera pose: transform of camera frame in the world frame -->
+    <!-- depth topic: depth image, 640x480 by default -->
+    <!-- don't set cloud_topic if you already set these ones! -->
+    <!-- <arg name="camera_pose_topic" value="visual_slam/camera_pose"/> -->
+    <!-- <arg name="depth_topic" value="visual_slam/depth"/> -->
+
+    <!-- topic of point cloud measurement, such as from LIDAR  -->
+    <!-- don't set camera pose and depth, if you already set this one! -->
+    <!-- <arg name="cloud_topic" value="$(arg map_topic)"/> -->
+
+    <!-- intrinsic params of the depth camera -->
+    <arg name="cx" value="321.04638671875"/>
+    <arg name="cy" value="243.44969177246094"/>
+    <arg name="fx" value="387.229248046875"/>
+    <arg name="fy" value="387.229248046875"/>
+
+    <!-- maximum velocity and acceleration the drone will reach -->
+    <arg name="max_vel" value="0.5" />
+    <arg name="max_acc" value="1.0" />
+
+    <!--always set to 1.5 times grater than sensing horizen-->
+    <arg name="planning_horizon" value="5.0" />
+
+    <arg name="use_distinctive_trajs" value="true" />
+
+    <!-- 1: use 2D Nav Goal to select goal  -->
+    <!-- 2: use global waypoints below  -->
+    <arg name="flight_type" value="2" />
+
+    <!-- global waypoints -->
+    <!-- It generates a piecewise min-snap traj passing all waypoints -->
+    <arg name="point_num" value="1" />
+
+    <arg name="point0_x" value="$(arg target_x)" />
+    <arg name="point0_y" value="$(arg target_y)" />
+    <arg name="point0_z" value="$(arg target_z)" />
+
+    <arg name="point1_x" value="0.0" />
+    <arg name="point1_y" value="15.0" />
+    <arg name="point1_z" value="1.0" />
+
+    <arg name="point2_x" value="15.0" />
+    <arg name="point2_y" value="0.0" />
+    <arg name="point2_z" value="1.0" />
+
+    <arg name="point3_x" value="0.0" />
+    <arg name="point3_y" value="-15.0" />
+    <arg name="point3_z" value="1.0" />
+
+    <arg name="point4_x" value="-15.0" />
+    <arg name="point4_y" value="0.0" />
+    <arg name="point4_z" value="1.0" />
+
+  </include>
+
+  <!-- ugv simulator -->
+  <include file="$(find ego_planner)/launch/simulator.xml">
+
+    <arg name="self_id" value="$(arg self_id)"/>
+
+    <arg name="map_size_x_" value="$(arg map_size_x)"/>
+    <arg name="map_size_y_" value="$(arg map_size_y)"/>
+    <arg name="map_size_z_" value="$(arg map_size_z)"/>
+
+    <arg name="init_x_" value="$(arg init_x)"/>
+    <arg name="init_y_" value="$(arg init_y)"/>
+    <arg name="init_z_" value="$(arg init_z)"/>
+
+    <arg name="odom_topic" value="$(arg origin_odom_topic)" />
+    <arg name="cmd_topic" value="$(arg cmd_topic)" />
+
+    <arg name="localsim" value="$(arg localsim)"/>
+    <arg name="have_noise" value="true"/>
+    <arg name="map_topic" value="$(arg map_topic)"/>
+
+    <arg name="uav_num" value="$(arg uav_num)"/>
+    <arg name="ugv_num" value="$(arg ugv_num)"/>
+  </include>
+
+</launch>

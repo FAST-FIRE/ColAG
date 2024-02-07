@@ -1,0 +1,187 @@
+<launch>
+
+    <arg name="uav_num" value="1"/>
+    <arg name="ugv_num" default="1"/>
+
+    <arg name="localsim" value="false"/>
+
+    <group ns="ugv_0" if="$(eval ugv_num>0)">
+        <include file="$(find ego_planner)/launch/run_in_sim.launch">
+            <arg name="self_id" value="0"/>
+            <arg name="uav_num" value="$(arg uav_num)"/>
+            <arg name="ugv_num" value="$(arg ugv_num)"/>
+
+            <arg name="init_x" value="0.0"/>
+            <arg name="init_y" value="16.0"/>
+            <arg name="init_z" value="0.3"/>
+
+            <arg name="target_x" value="0.0"/>
+            <arg name="target_y" value="-16.0"/>
+            <arg name="target_z" value="0.3"/>
+
+            <arg name="localsim" value="$(arg localsim)"/>
+        </include>
+    </group>
+
+    <group ns="ugv_1" if="$(eval ugv_num>1)">
+        <include file="$(find ego_planner)/launch/run_in_sim.launch">
+            <arg name="self_id" value="1"/>
+            <arg name="uav_num" value="$(arg uav_num)"/>
+            <arg name="ugv_num" value="$(arg ugv_num)"/>
+
+            <arg name="init_x" value="-2.0"/>
+            <arg name="init_y" value="16.0"/>
+            <arg name="init_z" value="0.3"/>
+
+            <arg name="target_x" value="-2.0"/>
+            <arg name="target_y" value="-16.0"/>
+            <arg name="target_z" value="0.3"/>
+
+            <arg name="localsim" value="$(arg localsim)"/>
+        </include>
+    </group>
+
+    <group ns="ugv_2" if="$(eval ugv_num>2)">
+        <include file="$(find ego_planner)/launch/run_in_sim.launch">
+            <arg name="self_id" value="2"/>
+            <arg name="uav_num" value="$(arg uav_num)"/>
+            <arg name="ugv_num" value="$(arg ugv_num)"/>
+
+            <arg name="init_x" value="2.0"/>
+            <arg name="init_y" value="16.0"/>
+            <arg name="init_z" value="0.3"/>
+
+            <arg name="target_x" value="2.0"/>
+            <arg name="target_y" value="-16.0"/>
+            <arg name="target_z" value="0.3"/>
+
+            <arg name="localsim" value="$(arg localsim)"/>
+        </include>
+    </group>
+
+    <group ns="ugv_3" if="$(eval ugv_num>3)">
+        <include file="$(find ego_planner)/launch/run_in_sim.launch">
+            <arg name="self_id" value="3"/>
+            <arg name="uav_num" value="$(arg uav_num)"/>
+            <arg name="ugv_num" value="$(arg ugv_num)"/>
+
+            <arg name="init_x" value="-4.0"/>
+            <arg name="init_y" value="16.0"/>
+            <arg name="init_z" value="0.3"/>
+
+            <arg name="target_x" value="-4.0"/>
+            <arg name="target_y" value="-16.0"/>
+            <arg name="target_z" value="0.3"/>
+
+            <arg name="localsim" value="$(arg localsim)"/>
+        </include>
+    </group>
+
+    <group ns="ugv_4" if="$(eval ugv_num>4)">
+        <include file="$(find ego_planner)/launch/run_in_sim.launch">
+            <arg name="self_id" value="4"/>
+            <arg name="uav_num" value="$(arg uav_num)eval"/>
+            <arg name="ugv_num" value="$(arg ugv_num)"/>
+
+            <arg name="init_x" value="4.0"/>
+            <arg name="init_y" value="16.0"/>
+            <arg name="init_z" value="0.3"/>
+
+            <arg name="target_x" value="4.0"/>
+            <arg name="target_y" value="-16.0"/>
+            <arg name="target_z" value="0.3"/>
+
+            <arg name="localsim" value="$(arg localsim)"/>
+        </include>
+    </group>
+
+    <group ns="ugv_5" if="$(eval ugv_num>5)">
+        <include file="$(find ego_planner)/launch/run_in_sim.launch">
+            <arg name="self_id" value="5"/>
+            <arg name="uav_num" value="$(arg uav_num)"/>
+            <arg name="ugv_num" value="$(arg ugv_num)"/>
+
+            <arg name="init_x" value="-6.0"/>
+            <arg name="init_y" value="16.0"/>
+            <arg name="init_z" value="0.3"/>
+
+            <arg name="target_x" value="-6.0"/>
+            <arg name="target_y" value="-16.0"/>
+            <arg name="target_z" value="0.3"/>
+
+            <arg name="localsim" value="$(arg localsim)"/>
+        </include>
+    </group>
+
+    <group ns="ugv_6" if="$(eval ugv_num>6)">
+        <include file="$(find ego_planner)/launch/run_in_sim.launch">
+            <arg name="self_id" value="6"/>
+            <arg name="uav_num" value="$(arg uav_num)"/>
+            <arg name="ugv_num" value="$(arg ugv_num)"/>
+
+            <arg name="init_x" value="6.0"/>
+            <arg name="init_y" value="16.0"/>
+            <arg name="init_z" value="0.3"/>
+
+            <arg name="target_x" value="6.0"/>
+            <arg name="target_y" value="-16.0"/>
+            <arg name="target_z" value="0.3"/>
+
+            <arg name="localsim" value="$(arg localsim)"/>
+        </include>
+    </group>
+
+    <group ns="ugv_7" if="$(eval ugv_num>7)">
+        <include file="$(find ego_planner)/launch/run_in_sim.launch">
+            <arg name="self_id" value="7"/>
+            <arg name="uav_num" value="$(arg uav_num)"/>
+            <arg name="ugv_num" value="$(arg ugv_num)"/>
+
+            <arg name="init_x" value="-8.0"/>
+            <arg name="init_y" value="16.0"/>
+            <arg name="init_z" value="0.3"/>
+
+            <arg name="target_x" value="-8.0"/>
+            <arg name="target_y" value="-16.0"/>
+            <arg name="target_z" value="0.3"/>
+
+            <arg name="localsim" value="$(arg localsim)"/>
+        </include>
+    </group>
+
+    <group ns="ugv_8" if="$(eval ugv_num>8)">
+        <include file="$(find ego_planner)/launch/run_in_sim.launch">
+            <arg name="self_id" value="8"/>
+            <arg name="uav_num" value="$(arg uav_num)"/>
+            <arg name="ugv_num" value="$(arg ugv_num)"/>
+
+            <arg name="init_x" value="8.0"/>
+            <arg name="init_y" value="16.0"/>
+            <arg name="init_z" value="0.3"/>
+
+            <arg name="target_x" value="8.0"/>
+            <arg name="target_y" value="-16.0"/>
+            <arg name="target_z" value="0.3"/>
+
+            <arg name="localsim" value="$(arg localsim)"/>
+        </include>
+    </group>
+
+    <group ns="ugv_9" if="$(eval ugv_num>9)">
+        <include file="$(find ego_planner)/launch/run_in_sim.launch">
+            <arg name="self_id" value="9"/>
+            <arg name="uav_num" value="$(arg uav_num)"/>
+            <arg name="ugv_num" value="$(arg ugv_num)"/>
+
+            <arg name="init_x" value="-10.0"/>
+            <arg name="init_y" value="16.0"/>
+            <arg name="init_z" value="0.3"/>
+
+            <arg name="target_x" value="-10.0"/>
+            <arg name="target_y" value="-16.0"/>
+            <arg name="target_z" value="0.3"/>
+
+            <arg name="localsim" value="$(arg localsim)"/>
+        </include>
+    </group>
+</launch>

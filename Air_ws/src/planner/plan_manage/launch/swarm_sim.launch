@@ -1,0 +1,30 @@
+<launch>
+
+  <arg name="uav_num" value="1"/>
+  <arg name="ugv_num" default="1"/>
+
+  <arg name="odom_topic" value="lidar_slam/odom" />
+  <arg name="cmd_topic" value="planning/pos_cmd" />
+
+  <arg name="camera_pose_topic" value="pcl_render_node/camera_pose"/>
+  <arg name="depth_topic" value="pcl_render_node/depth"/>
+  <arg name="cloud_topic" value="pcl_render_node/cloud"/>
+
+  <group ns="drone_0">
+    <include file="$(find ego_planner)/launch/run_in_sim.launch">
+
+      <arg name="self_id" value="0"/>
+      <arg name="uav_num" value="$(arg uav_num)"/>
+      <arg name="ugv_num" value="$(arg ugv_num)"/>
+
+      <arg name="odom_topic" value="$(arg odom_topic)"/>
+      <arg name="cmd_topic" value="$(arg cmd_topic)"/>
+
+      <arg name="camera_pose_topic" value="$(arg camera_pose_topic)"/>
+      <arg name="depth_topic" value="$(arg depth_topic)"/>
+      <arg name="cloud_topic" value="$(arg cloud_topic)"/>
+
+    </include>
+  </group>
+
+</launch>

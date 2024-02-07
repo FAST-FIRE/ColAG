@@ -1,0 +1,15 @@
+<launch>
+    <arg name="drone_id" default="99" />
+    <arg name="odometry_topic" default="visual_slam/odom" />
+	<node pkg="px4ctrl" type="px4ctrl_node" name="px4ctrl" output="screen">
+        	<!-- <remap from="~odom" to="/vicon_imu_ekf_odom" /> -->
+
+			  <remap from="~odom" to="/ekf/ekf_odom" />
+			<!-- <remap from="~odom" to="/vins_fusion/imu_propagate" /> -->
+
+			<!-- <remap from="~cmd" to="/position_cmd" /> -->
+	    <remap from="~cmd" to="drone_$(arg drone_id)_planning/pos_cmd"/>
+        <rosparam command="load" file="$(find px4ctrl)/config/ctrl_param_fpv.yaml" />
+	</node>
+ 
+</launch>

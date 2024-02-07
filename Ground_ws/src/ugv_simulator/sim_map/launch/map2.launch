@@ -1,0 +1,7 @@
+<?xml version="1.0"?>
+
+<launch>
+  <include file="$(find sim_map)/launch/start.launch">
+    <arg name="world" value="$(find sim_map)/worlds/map2.world"/>
+  </include>
+</launch>

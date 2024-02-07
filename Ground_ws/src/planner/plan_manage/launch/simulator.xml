@@ -1,0 +1,92 @@
+<launch>
+  <arg name="init_x_"/>
+  <arg name="init_y_"/>
+  <arg name="init_z_"/>
+
+  <arg name="map_size_x_"/>
+  <arg name="map_size_y_"/>
+  <arg name="map_size_z_"/>
+
+  <arg name="odom_topic"/>
+  <arg name="cmd_topic"/>
+  <arg name="map_topic"/>
+
+  <arg name="self_id"/>
+  <arg name="uav_num"/>
+  <arg name="ugv_num"/>
+
+  <arg name="localsim" default="false"/>
+  <arg name="have_noise" default="true"/>
+
+  <node pkg="fake_car" name="fake_car" type="fake_car" output="screen">
+
+    <param name="init_x" value="$(arg init_x_)"/>
+    <param name="init_y" value="$(arg init_y_)"/>
+    <param name="init_z" value="$(arg init_z_)"/>
+    <param name="init_yaw" value="-0.5"/>
+    <param name="id" value="$(arg self_id)"/>
+
+    <param name="have_noise" value="$(arg have_noise)"/>
+    <remap from="~cmd_vel" to="$(arg cmd_topic)"/>
+    <remap from="~odom_car" to="$(arg odom_topic)"/>
+
+  </node>
+
+
+  <node pkg="fake_crepes" name="fake_crepes" type="fake_crepes" output="screen">
+
+    <param name="uav_num" value="$(arg uav_num)"/>
+    <param name="ugv_num" value="0"/>
+    <param name="self_id" value="$(arg self_id)"/>
+
+    <param name="ugv_odom_topic" value="$(arg odom_topic)" type="string"/>
+    <param name="uav_odom_topic" value="odom" type="string"/>
+
+    <param name="have_noise" value="$(arg have_noise)"/>
+
+    <remap from="~self_odom" to="$(arg odom_topic)"/>
+
+    <remap from="/uav_0/odom" to="/drone_0/lidar_slam/odom"/>
+
+  </node>
+
+
+  <node pkg="odom_visualization" name="odom_visualization" type="odom_visualization" output="screen">
+
+    <remap from="~odom" to="$(arg odom_topic)"/>
+
+    <param name="mesh_resource" value="file://$(find odom_visualization)/meshes/car.dae"/>
+    <param name="color/a" value="1.0"/>
+    <param name="color/r" value="0.0"/>
+    <param name="color/g" value="1.0"/>
+    <param name="color/b" value="1.0"/>
+    <param name="covariance_scale" value="100.0"/>
+    <param name="robot_scale" value="0.2"/>
+    <param name="rotate_yaw_deg" value="90.0"/>
+    <param name="cross_config" value="talse"/>
+    <param name="tf45" value="false"/>
+    <param name="drone_id" value="20"/>
+
+  </node>
+
+
+  <group if="$(arg localsim)">
+    <node pkg="local_sensing_node" type="pcl_render_node" name="pcl_render_node" output="screen">
+
+      <rosparam command="load" file="$(find local_sensing_node)/params/camera.yaml" />
+      <param name="sensing_horizon" value="5.0" />
+      <param name="sensing_rate" value="30.0"/>
+      <param name="estimation_rate" value="30.0"/>
+
+      <param name="map/x_size" value="$(arg map_size_x_)"/>
+      <param name="map/y_size" value="$(arg map_size_y_)"/>
+      <param name="map/z_size" value="$(arg map_size_z_)"/>
+
+      <remap from="~global_map" to="/random_forest/global_cloud"/>
+      <remap from="~odometry" to="$(arg odom_topic)"/>
+      <remap from="~pcl_render_node/cloud" to="$(arg map_topic)"/>
+
+    </node>
+  </group>
+
+</launch>
