@@ -68,7 +68,7 @@ sudo make install
 # which is tested on Ubuntu 20.04
 
 sudo apt install python3-pip
-python -m pip install --upgrade --user ortools
+python3 -m pip install --upgrade --user ortools
 ```
 
 The Air_ws, Ground_ws, MARSIM_ws are separated catkin workspace, since they based on ego-swarm
