@@ -158,4 +158,4 @@ We are still working on extending the proposed system and improving code reliabi
 
 For any technical issues, please contact Zhehan Li (<zhehanli@zju.edu.cn>) or Yanjun Cao (<fgaoaa@zju.edu.cn>).
 
-For commercial inquiries, please contact Fei Gao (<fgaoaa@zju.edu.cn>).
+For commercial inquiries, please contact Yanjun Cao (<fgaoaa@zju.edu.cn>).
