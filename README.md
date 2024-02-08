@@ -41,7 +41,7 @@ Compiling tests passed on Ubuntu 20.04 with ros1 installed.
 For convenience, we listed the installation steps here
 
 ```sh
-sudo apt install libglfw3-dev libglew-dev libarmadillo-dev ros-noetic-mavros
+sudo apt install libglfw3-dev libglew-dev libarmadillo-dev libzmqpp-dev ros-noetic-mavros
 
 git clone https://github.com/osqp/osqp
 cd osqp
