@@ -33,6 +33,7 @@ If our source code is used in your academic projects, please cite our paper. Tha
 
 Compiling tests passed on Ubuntu 20.04 with ros1 installed.
 
+- Follow the [Ubuntu install of ROS Noetic](https://wiki.ros.org/noetic/Installation/Ubuntu)
 - Follow the installation of [MARSIM](https://github.com/hku-mars/MARSIM)
 - Follow the installation of [EGO-Swarm](https://github.com/ZJU-FAST-Lab/ego-planner-swarm)
 - Follow the installation of [OR-Tools](https://github.com/google/or-tools), use the Python version
@@ -116,6 +117,12 @@ roslaunch ego_planner swarm_sim.launch ugv_num:=3
 cd Air_ws
 source devel/setup.sh
 roslaunch ego_planner swarm_sim.launch ugv_num:=3
+```
+
+Or use the [run.sh](run.sh) to run the launches above
+
+```sh
+./run.sh 3 # the ugv num
 ```
 
 Then send a trigger to start blind navigation
