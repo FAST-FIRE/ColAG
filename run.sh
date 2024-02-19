@@ -17,7 +17,7 @@ cd $MARSIM && catkin_make
 cd $UGV && catkin_make
 cd $UAV && catkin_make
 
-source $MARSIM/devel/setup.sh && roslaunch test_interface single_drone_vlp32.launch &
-source $UGV/devel/setup.sh && roslaunch ego_planner swarm_sim.launch ugv_num:=$ugv_num &
+source $UAV/devel/setup.sh && roslaunch ego_planner rviz.launch &
 source $UAV/devel/setup.sh && roslaunch ego_planner swarm_sim.launch ugv_num:=$ugv_num &
-source $UAV/devel/setup.sh && roslaunch ego_planner rviz.launch
+source $UGV/devel/setup.sh && roslaunch ego_planner swarm_sim.launch ugv_num:=$ugv_num &
+source $MARSIM/devel/setup.sh && roslaunch test_interface single_drone_vlp32.launch

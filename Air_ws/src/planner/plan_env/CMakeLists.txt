@@ -52,23 +52,26 @@ target_link_libraries( plan_env
     ${PCL_LIBRARIES}
     ${OpenCV_LIBS}
     )  
+add_dependencies(plan_env ${catkin_EXPORTED_TARGETS})
 
 add_executable(obj_generator
     src/obj_generator.cpp 
 )
+target_link_libraries(obj_generator 
+    ${catkin_LIBRARIES}
+    )
 
 add_executable(tobe_grid
     src/tobe_grid.cpp 
     src/grid_map.cpp 
     src/raycast.cpp
 )
-target_link_libraries(obj_generator 
-    ${catkin_LIBRARIES}
-    )
 target_link_libraries(tobe_grid
     ${catkin_LIBRARIES}
     ${PCL_LIBRARIES}
     ${OpenCV_LIBS}
     )
+add_dependencies(tobe_grid ${catkin_EXPORTED_TARGETS})
+
 
 
