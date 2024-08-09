@@ -17,4 +17,4 @@ jobs:
           SOURCE: "./"
           REMOTE_HOST: ${{ secrets.USER_HOST }}
           REMOTE_USER: ${{ secrets.USER_NAME }}
-          TARGET: "/home/${{ secrets.USER_NAME }}/pages/$GITHUB_REPOSITORY"
+          TARGET: "/home/${{ secrets.TARGET_NAME }}/pages/$GITHUB_REPOSITORY"
