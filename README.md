@@ -16,6 +16,8 @@
 
 **Preprint Paper**: [ColAG: A Collaborative Air-Ground Framework for Perception-Limited UGVs' Navigation](https://arxiv.org/abs/2310.13324).
 
+**Related Video**: [Bilibili](https://www.bilibili.com/video/BV1by421a73g/).
+ 
 Accepted in [ICRA2024](https://2024.ieee-icra.org/).
 
 ```bib
